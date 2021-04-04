@@ -9,7 +9,7 @@ maintainer:          denis.redozubov@gmail.com
 category:            Web
 build-type:          Simple
 library
-  build-depends:       base >=4.10 && <4.13
+  build-depends:       base >=4.10 && <5
                      , aeson
                      , bytestring
                      , email-validate

@@ -13,6 +13,7 @@ library
                      , aeson
                      , bytestring
                      , email-validate
+                     , email-validate-extra
                      , lens >= 4.13
                      , QuickCheck
                      , text >= 1.2.1.3

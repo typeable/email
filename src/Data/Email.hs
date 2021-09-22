@@ -18,8 +18,9 @@ import Data.Text.Encoding (decodeUtf8)
 import Data.Text.Lens
 import Test.QuickCheck.Arbitrary
 import Test.QuickCheck.Gen (elements)
+import Text.Email.Extra (validateEmail)
 import Text.Email.Parser
-import Text.Email.Validate (EmailAddress, emailAddress)
+import Text.Email.Validate (EmailAddress)
 
 newtype Email
   = Email
@@ -30,7 +31,7 @@ makePrisms ''Email
 
 -- | "Orphaned" prism.
 _EmailAddress :: Prism' ByteString EmailAddress
-_EmailAddress = prism' toByteString emailAddress
+_EmailAddress = prism' toByteString (preview _Right . validateEmail)
 
 -- | Can be used like this:
 --

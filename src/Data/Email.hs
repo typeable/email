@@ -7,20 +7,18 @@ module Data.Email
   , _EmailEmailAddress
   ) where
 
-import Control.Lens hiding (elements)
-import Control.Monad
-import Data.Aeson as JSON
-import Data.ByteString
-import Data.ByteString.Lens
-import Data.String
-import Data.Text as T
-import Data.Text.Encoding (decodeUtf8)
-import Data.Text.Lens
-import Test.QuickCheck.Arbitrary
-import Test.QuickCheck.Gen (elements)
-import Text.Email.Extra (validateEmail)
-import Text.Email.Parser
-import Text.Email.Validate (EmailAddress)
+import           Control.Lens              hiding (elements)
+import           Data.Aeson                as JSON
+import           Data.ByteString
+import           Data.ByteString.Lens
+import           Data.String
+import           Data.Text                 as T
+import           Data.Text.Encoding        (decodeUtf8)
+import           Data.Text.Lens
+import           Test.QuickCheck.Arbitrary
+import           Test.QuickCheck.Gen       (elements)
+import           Text.Email.Extra          (validateEmail)
+import           Text.Email.Parser
 
 newtype Email
   = Email
@@ -51,16 +49,6 @@ instance Arbitrary Email where
     user <- elements ["user", "foo", "bar" :: Text]
     host <- elements ["example.com", "gmail.com" :: Text]
     return $ Email $ user <> host
-
-instance ToJSON EmailAddress where
-  toJSON = toJSON . view (re _EmailEmailAddress . _Email)
-
-instance FromJSON EmailAddress where
-  parseJSON = withText "EmailAddress" $ \s -> do
-    let ea = s ^? re _Email . _EmailEmailAddress
-    case ea of
-      Just x  -> pure x
-      Nothing -> mzero
 
 toEmail :: EmailAddress -> Email
 toEmail = Email . decodeUtf8 . toByteString
